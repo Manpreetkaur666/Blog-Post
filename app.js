@@ -10,7 +10,7 @@ const path = require('path')
 require("dotenv").config();
 require('dotenv').config({path: '.env'})
 
-const mongoURI = process.env.MONGO_URI;
+const MONGO_URI = process.env.MONGO_URI;
 
 const homeStartingContent = "Everyday is a new begiining and Everyday is a new challenge.";
 const aboutContent = "I am Web developer. I have done all my studdies in computers related field.I did Bachelors degree in computers science technology and learned many coding languages.For ex: C,C++ ,JAVA ,Python.Then I worked as a freelancer with startups in India.I came in Canada in 2019 and did two PG Diploma Courses.Mobile Application Development and Big data Analytics.So I have also knowlwdge of SWift and did my live project in college in Python django for medical startup.I am currently love coding websites on front-end and back-end using HTML,CSS,Bootstap,Javascript,JQuery,Node Js,MySQL and MongoDB.";
@@ -24,7 +24,15 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
-mongoose.connect(mongoURI);
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
 
 
 /************************************** blogPost Schema *************************************/
@@ -126,8 +134,10 @@ if (port == null || port == "") {
   port = 3000;
 }
 
-app.listen(port,function(){
-    console.log("The server is running on port: 3000");
+connectDB().then(() => {
+  app.listen(port, () => {
+      console.log("listening for requests");
+  })
 });
 
 // app.listen(3000, function() {

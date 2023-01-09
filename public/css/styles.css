@@ -16,6 +16,12 @@
     color: #e27d6e!important;
 }
 
+.heading{
+    font-style: italic;
+    font-family: cursive;
+    color: orangered;
+}
+
 .footer-padding {
 	padding-bottom: 60px;
 }
